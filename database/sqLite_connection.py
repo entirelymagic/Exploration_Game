@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class DatabaseConnections:
+class DatabaseConnectionsSQLite:
     """Create a Database Connection Object that take a host as a database and return the connection"""
 
     def __init__(self, host):
@@ -18,3 +18,4 @@ class DatabaseConnections:
         else:
             self.connection.commit()
             self.connection.close()
+
