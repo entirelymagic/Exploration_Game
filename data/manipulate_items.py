@@ -1,4 +1,4 @@
-from data.data_types import Items
+from data.data_types import Items, Heroes
 from random import randint, choice
 
 
@@ -147,6 +147,7 @@ class CreateMonster:
         'Giant Spider',
         'Bear',
         'Zombie',
+
     ]
 
     def __pick_monster_name(self):
@@ -159,7 +160,58 @@ class CreateMonster:
         return self.lvl+randint(1, 3)
 
 
-for i in range(10):
-    random_monster = CreateMonster(5)
-    print(random_monster)
+class HeroStats(Heroes):
+    """Gather and get the hero statistics"""
+    def __init__(self, hero_name, account, lvl=1, hp=500, attack=10, defense=10, fire_attack=0, fire_res=0,
+                 stash_size=50):
+        # super().__init__(hero_name, account, lvl, hp, attack, defense, fire_attack, fire_res, stash_size)
+        self.hero_name = hero_name
+        self.lvl = lvl
+        self.hp = hp
+        self.attack = attack
+        self.defense = defense
+        self.fire_res = fire_res
+        self.fire_attack = fire_attack
+        self.account = account
+        self.stash_size = stash_size
+        self.items = self.__get_hero_items()
 
+    hero_slots = {
+        'Helmet': 0,
+        'Shied': 0,
+        'Belt': 0,
+        'Body': 0,
+        'Pants': 0,
+        'Boots': 0,
+        'Arms': 0,
+        'One hand weapon': 0,
+        'Two handed weapon': 0,
+        'Ring': 0,
+        'Amulet': 0,
+    }
+
+    def __repr__(self):
+        return f"""Character <{self.hero_name}>
+                lvl: {self.lvl}
+                hp: {self.hp} 
+                attack: {self.attack}
+                defense: {self.defense}
+                fire attack: {self.fire_attack}
+                fire resist: {self.fire_res}
+                account: {self.account}
+                items: {self.items}
+                """
+
+    def _set_item_active(self, itemID):
+        for item in self.items:
+            if item[0] == itemID:
+                if not item[5]:
+                    item[5] = True
+                    self.hero_slots[item[3]] = 1
+
+    def __get_hero_items(self):
+        self.items = Items.load_item_from_db_by_hero_name(self.hero_name)
+        return self.items
+
+    def __autoequip_items(self):
+        pass   # TODO make autoequip function active
