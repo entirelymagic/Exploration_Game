@@ -3,6 +3,10 @@ from random import randint, choice
 
 
 class CreateItems:
+    """
+    Create an item giving the item <lvl> (according to the character and item_type
+    Can be offensive <value=1> or defensive with <value=0>
+    """
     def __init__(self, item_lvl, item_type):
         self.item_lvl = self.__item_lvl(item_lvl)
         self.item_type = self.__item_type(item_type)
@@ -21,6 +25,7 @@ class CreateItems:
                 item_name: {self.name}
                 """
 
+    # Defensive type of weapons
     DEF_TYPE = [
         'Helmet',
         'Shied',
@@ -30,6 +35,7 @@ class CreateItems:
         'Boots',
         'Arms'
     ]
+    # Offensive type of weapons
     OFF_TYPE = [
         'One hand weapon',
         'Two handed weapon',
@@ -37,7 +43,8 @@ class CreateItems:
         'Amulet',
     ]
 
-    def __get_rarity(self):
+    @staticmethod
+    def __get_rarity():
         luck = randint(0, 100)
         if luck <= 25:
             result = 0
@@ -102,6 +109,7 @@ class CreateItems:
                 return item_name
 
     def add_to_db(self, hero_name):
+        """Add the newly created item to the database"""
         if self.item_type in self.OFF_TYPE:
             item = Items(self.name, hero_name, self.item_type, self.rarity, self.item_lvl, self.attack)
         elif self.item_type in self.DEF_TYPE:
@@ -109,4 +117,49 @@ class CreateItems:
         item.create_new_item()
 
 
+class CreateMonster:
+    """Create a monster according to the lvl of the character"""
+    def __init__(self, lvl):
+        self.name = self.__pick_monster_name()
+        self.lvl = self.__item_lvl(lvl)
+        self.hp = self.__get_hp()
+        self.attack = int(self.__get_attack())
+        self.defense = int(self.__get_attack()/2)
+
+    def __repr__(self):
+        return f"""
+        Monster name : {self.name}
+        Monster lvl: {self.lvl}
+        Monster HP: {self.hp}
+        Monster ATK: {self.attack}
+        Monster DEF: {self.defense}
+        """
+    @classmethod
+    def __item_lvl(cls, lvl):
+        result = randint(lvl, lvl + 3)
+        return result
+
+    MONSTER_NAMES = [
+        'Rat',
+        'Wolf',
+        'Golem',
+        'Troll',
+        'Giant Spider',
+        'Bear',
+        'Zombie',
+    ]
+
+    def __pick_monster_name(self):
+        return choice(self.MONSTER_NAMES)
+
+    def __get_hp(self):
+        return self.lvl*(1+4)**2
+
+    def __get_attack(self):
+        return self.lvl+randint(1, 3)
+
+
+for i in range(10):
+    random_monster = CreateMonster(5)
+    print(random_monster)
 
