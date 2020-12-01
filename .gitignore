@@ -6,3 +6,6 @@
 *.iml
 out
 gen
+/database/db_login_info.py/
+data/__pycache__/
+database/__pycache__/
