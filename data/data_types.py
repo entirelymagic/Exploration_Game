@@ -157,3 +157,19 @@ class Items:
     def useSQL(self, sql):
         with CursorFromConnectionPool() as cursor:
             cursor.execute(sql)
+
+
+class Monsters:
+    def __init__(self, name, lvl, hp, attack, defense):
+        self.name = name
+        self.lvl = lvl
+        self.hp = hp
+        self.attack = attack
+        self.defense = defense
+
+    def create_new_monster(self):
+        with CursorFromConnectionPool() as cursor:
+            sql = "INSERT into monsters VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (self.name, self.lvl,
+                                 self.hp, self.attack, self.defense)
+                           )
