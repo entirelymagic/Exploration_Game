@@ -38,8 +38,8 @@ class Users:
 
 
 class Heroes:
-    def __init__(self, hero_name, account, lvl=1, hp=100, attack=1, defense=1,
-                 fire_attack=1, fire_res=1, stash_size=50):
+    def __init__(self, hero_name, account, lvl=1, hp=500, attack=10, defense=10,
+                 fire_attack=0, fire_res=0, stash_size=50):
         self.hero_name = hero_name
         self.lvl = lvl
         self.hp = hp
