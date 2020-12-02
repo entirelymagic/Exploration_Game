@@ -91,6 +91,7 @@ class Heroes:
 
 
 class Items:
+    """Used to connect and get from the PostgresQl database."""
     def __init__(self, item_name, hero_name, item_type, rarity, item_lvl=1,
                  item_attack=0, item_defense=0, fire_attack=0, fire_res=0, equipped=False,):
         psycopg2.extras.register_uuid()
@@ -160,6 +161,7 @@ class Items:
 
 
 class Monsters:
+    """Not Implemented Yet!"""
     def __init__(self, name, lvl, hp, attack, defense):
         self.name = name
         self.lvl = lvl
@@ -173,3 +175,91 @@ class Monsters:
             cursor.execute(sql, (self.name, self.lvl,
                                  self.hp, self.attack, self.defense)
                            )
+
+
+class HeroSlots:
+    def __init__(self, hero_name):
+        self.hero_name = hero_name
+
+    hero_slots = {
+        'helmet': 1,
+        'chest': 1,
+        'belt': 0,
+        'pants': 1,
+        'boots': 0,
+        'arms': 1,
+        'left_ring': 0,
+        'right_ring': 1,
+        'amulet': 0,
+        'left_arm': 0,
+        'right_arm': 0,
+    }
+
+    def __repr__(self):
+        return f"""
+        {self.hero_slots}
+        """
+
+    def _get_hero_slots_from_db(self):
+        with CursorFromConnectionPool() as cursor:
+            sql = "SELECT * FROM hero_slots WHERE hero_name = %s"
+            cursor.execute(sql, (self.hero_name,))
+            slots_data = cursor.fetchall()
+            for status in slots_data[0][1:]:
+                for slot in self.hero_slots.keys():
+                    self.hero_slots[slot] = status
+            return self.hero_slots
+
+    def _update_slots_db(self):
+        with CursorFromConnectionPool() as cursor:
+            keys_list = [x for x in self.hero_slots.keys()]
+            hero_name = 'hero_name'
+            sql = 'UPDATE hero_slots SET ' \
+                  'helmet = %s, ' \
+                  'chest = %s, ' \
+                  'belt = %s, ' \
+                  'pants = %s, ' \
+                  'boots = %s, ' \
+                  'arms = %s, ' \
+                  'left_ring = %s, ' \
+                  'right_ring = %s, ' \
+                  'amulet = %s, ' \
+                  'left_arm = %s, ' \
+                  'right_arm = %s ' \
+                  ' WHERE hero_name = %s'
+            cursor.execute(sql, (
+                self.hero_slots['helmet'],
+                self.hero_slots['chest'],
+                self.hero_slots['belt'],
+                self.hero_slots['pants'],
+                self.hero_slots['boots'],
+                self.hero_slots['arms'],
+                self.hero_slots['left_ring'],
+                self.hero_slots['right_ring'],
+                self.hero_slots['amulet'],
+                self.hero_slots['left_arm'],
+                self.hero_slots['right_arm'],
+                self.hero_name
+            ))
+
+    def _create_slots_db(self):
+        with CursorFromConnectionPool() as cursor:
+            sql = 'INSERT into hero_slots VALUES(' \
+                  '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+            cursor.execute(sql, (
+                self.hero_name,
+                self.hero_slots['helmet'],
+                self.hero_slots['chest'],
+                self.hero_slots['belt'],
+                self.hero_slots['pants'],
+                self.hero_slots['boots'],
+                self.hero_slots['arms'],
+                self.hero_slots['left_ring'],
+                self.hero_slots['right_ring'],
+                self.hero_slots['amulet'],
+                self.hero_slots['left_arm'],
+                self.hero_slots['right_arm']
+            ))
+
+
+
