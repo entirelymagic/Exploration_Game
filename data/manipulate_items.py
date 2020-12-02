@@ -134,6 +134,7 @@ class CreateMonster:
         Monster ATK: {self.attack}
         Monster DEF: {self.defense}
         """
+
     @classmethod
     def __item_lvl(cls, lvl):
         result = randint(lvl, lvl + 3)
@@ -178,15 +179,15 @@ class HeroStats(Heroes):
 
     hero_slots = {
         'Helmet': 0,
-        'Shied': 0,
         'Belt': 0,
-        'Body': 0,
         'Pants': 0,
         'Boots': 0,
         'Arms': 0,
-        'One hand weapon': 0,
-        'Two handed weapon': 0,
-        'Ring': 0,
+        'Chest': 0,
+        'Left_arm': 0,
+        'Right_arm': 0,
+        'Left_ring': 0,
+        'Right_ring': 0,
         'Amulet': 0,
     }
 
