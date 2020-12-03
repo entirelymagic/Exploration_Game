@@ -32,9 +32,9 @@ class Users:
                        )
 
     @classmethod
-    def _use_SQL(cls, sql):
+    def _use_SQL(cls, sql, *args):
         with CursorFromConnectionPool() as cursor:
-            cursor.execute(sql)
+            cursor.execute(sql, (*args,))
 
 
 class Heroes:
@@ -85,9 +85,9 @@ class Heroes:
                        )
 
     @classmethod
-    def _useSQL(cls, sql):
+    def _use_SQL(cls, sql, *args):
         with CursorFromConnectionPool() as cursor:
-            cursor.execute(sql)
+            cursor.execute(sql, (*args,))
 
 
 class Items:
@@ -112,10 +112,6 @@ class Items:
         1: 'Rare',
         2: 'Mythical',
         3: 'Legendary'
-    }
-
-    ITEM_TYPE = {
-
     }
 
     def __repr__(self):
@@ -147,17 +143,25 @@ class Items:
                                  self.fire_res,
                                  self.item_lvl)
                            )
+
     @classmethod
     def load_item_from_db_by_hero_name(cls, hero_name):
         with CursorFromConnectionPool() as cursor:
             sql = 'SELECT * FROM items WHERE character_name = %s'
             cursor.execute(sql, (hero_name,))
             character_data = cursor.fetchall()
-            return character_data
+            return [list(item) for item in character_data]
 
-    def useSQL(self, sql):
+    @classmethod
+    def update_item_status(cls, id_item, status):
         with CursorFromConnectionPool() as cursor:
-            cursor.execute(sql)
+            sql = 'UPDATE items SET equipped = %s WHERE item_id = %s'
+            cursor.execute(sql, (status, id_item))
+
+    @classmethod
+    def _use_SQL(cls, sql, *args):
+        with CursorFromConnectionPool() as cursor:
+            cursor.execute(sql, (*args,))
 
 
 class Monsters:
@@ -182,17 +186,17 @@ class HeroSlots:
         self.hero_name = hero_name
 
     hero_slots = {
-        'helmet': 1,
-        'chest': 1,
-        'belt': 0,
-        'pants': 1,
-        'boots': 0,
-        'arms': 1,
-        'left_ring': 0,
-        'right_ring': 1,
-        'amulet': 0,
-        'left_arm': 0,
-        'right_arm': 0,
+        'Helmet': 0,
+        'Chest': 0,
+        'Belt': 0,
+        'Pants': 0,
+        'Boots': 0,
+        'Arms': 0,
+        'Left_ring': 0,
+        'Right_ring': 0,
+        'Amulet': 0,
+        'Left_arm': 0,
+        'Right_arm': 0,
     }
 
     def __repr__(self):
@@ -200,20 +204,26 @@ class HeroSlots:
         {self.hero_slots}
         """
 
-    def _get_hero_slots_from_db(self):
+    def get_hero_slots_from_db(self):
         with CursorFromConnectionPool() as cursor:
             sql = "SELECT * FROM hero_slots WHERE hero_name = %s"
             cursor.execute(sql, (self.hero_name,))
             slots_data = cursor.fetchall()
-            for status in slots_data[0][1:]:
-                for slot in self.hero_slots.keys():
-                    self.hero_slots[slot] = status
-            return self.hero_slots
+            self.hero_slots.update({'Helmet': slots_data[0][1]})
+            self.hero_slots.update({'Chest': slots_data[0][2]})
+            self.hero_slots.update({'Belt': slots_data[0][3]})
+            self.hero_slots.update({'Pants': slots_data[0][4]})
+            self.hero_slots.update({'Boots': slots_data[0][5]})
+            self.hero_slots.update({'Arms': slots_data[0][6]})
+            self.hero_slots.update({'Left_ring': slots_data[0][7]})
+            self.hero_slots.update({'Right_ring': slots_data[0][8]})
+            self.hero_slots.update({'Amulet': slots_data[0][9]})
+            self.hero_slots.update({'Left_arm': slots_data[0][10]})
+            self.hero_slots.update({'Right_arm': slots_data[0][11]})
 
-    def _update_slots_db(self):
+
+    def update_slots_db(self):
         with CursorFromConnectionPool() as cursor:
-            keys_list = [x for x in self.hero_slots.keys()]
-            hero_name = 'hero_name'
             sql = 'UPDATE hero_slots SET ' \
                   'helmet = %s, ' \
                   'chest = %s, ' \
@@ -228,17 +238,17 @@ class HeroSlots:
                   'right_arm = %s ' \
                   ' WHERE hero_name = %s'
             cursor.execute(sql, (
-                self.hero_slots['helmet'],
-                self.hero_slots['chest'],
-                self.hero_slots['belt'],
-                self.hero_slots['pants'],
-                self.hero_slots['boots'],
-                self.hero_slots['arms'],
-                self.hero_slots['left_ring'],
-                self.hero_slots['right_ring'],
-                self.hero_slots['amulet'],
-                self.hero_slots['left_arm'],
-                self.hero_slots['right_arm'],
+                self.hero_slots['Helmet'],
+                self.hero_slots['Chest'],
+                self.hero_slots['Belt'],
+                self.hero_slots['Pants'],
+                self.hero_slots['Boots'],
+                self.hero_slots['Arms'],
+                self.hero_slots['Left_ring'],
+                self.hero_slots['Right_ring'],
+                self.hero_slots['Amulet'],
+                self.hero_slots['Left_arm'],
+                self.hero_slots['Right_arm'],
                 self.hero_name
             ))
 
@@ -261,5 +271,8 @@ class HeroSlots:
                 self.hero_slots['right_arm']
             ))
 
-
+    @classmethod
+    def _use_SQL(cls, sql, *args):
+        with CursorFromConnectionPool() as cursor:
+            cursor.execute(sql, (*args,))
 
