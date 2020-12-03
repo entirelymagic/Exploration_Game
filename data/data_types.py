@@ -208,19 +208,9 @@ class HeroSlots:
         with CursorFromConnectionPool() as cursor:
             sql = "SELECT * FROM hero_slots WHERE hero_name = %s"
             cursor.execute(sql, (self.hero_name,))
-            slots_data = cursor.fetchall()
-            self.hero_slots.update({'Helmet': slots_data[0][1]})
-            self.hero_slots.update({'Chest': slots_data[0][2]})
-            self.hero_slots.update({'Belt': slots_data[0][3]})
-            self.hero_slots.update({'Pants': slots_data[0][4]})
-            self.hero_slots.update({'Boots': slots_data[0][5]})
-            self.hero_slots.update({'Arms': slots_data[0][6]})
-            self.hero_slots.update({'Left_ring': slots_data[0][7]})
-            self.hero_slots.update({'Right_ring': slots_data[0][8]})
-            self.hero_slots.update({'Amulet': slots_data[0][9]})
-            self.hero_slots.update({'Left_arm': slots_data[0][10]})
-            self.hero_slots.update({'Right_arm': slots_data[0][11]})
-
+            slots_data = list(cursor.fetchall())[0]
+            slot_names = list(self.hero_slots.keys())
+            self.hero_slots.update(zip(slot_names, slots_data[1:]))
 
     def update_slots_db(self):
         with CursorFromConnectionPool() as cursor:
