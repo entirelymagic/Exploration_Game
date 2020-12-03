@@ -1,6 +1,8 @@
-from database.postgreSQL_connection import CursorFromConnectionPool
 import psycopg2.extras
 import uuid
+
+from itertools import islice
+from database.postgreSQL_connection import CursorFromConnectionPool
 
 
 class Users:
@@ -115,7 +117,8 @@ class Items:
     }
 
     def __repr__(self):
-        return f"""Character <{self.hero_name}>
+        return f"""
+                Character <{self.hero_name}>
                 item_id {self.item_id}
                 item_name: {self.item_name}
                 item_lvl: {self.item_lvl} 
@@ -208,39 +211,19 @@ class HeroSlots:
         with CursorFromConnectionPool() as cursor:
             sql = "SELECT * FROM hero_slots WHERE hero_name = %s"
             cursor.execute(sql, (self.hero_name,))
-            slots_data = list(cursor.fetchall())[0]
-            slot_names = list(self.hero_slots.keys())
-            self.hero_slots.update(zip(slot_names, slots_data[1:]))
+            self.hero_slots.update(
+                zip(self.hero_slots, islice(cursor.fetchone(), 1, None))
+            )
 
     def update_slots_db(self):
         with CursorFromConnectionPool() as cursor:
-            sql = 'UPDATE hero_slots SET ' \
-                  'helmet = %s, ' \
-                  'chest = %s, ' \
-                  'belt = %s, ' \
-                  'pants = %s, ' \
-                  'boots = %s, ' \
-                  'arms = %s, ' \
-                  'left_ring = %s, ' \
-                  'right_ring = %s, ' \
-                  'amulet = %s, ' \
-                  'left_arm = %s, ' \
-                  'right_arm = %s ' \
-                  ' WHERE hero_name = %s'
-            cursor.execute(sql, (
-                self.hero_slots['Helmet'],
-                self.hero_slots['Chest'],
-                self.hero_slots['Belt'],
-                self.hero_slots['Pants'],
-                self.hero_slots['Boots'],
-                self.hero_slots['Arms'],
-                self.hero_slots['Left_ring'],
-                self.hero_slots['Right_ring'],
-                self.hero_slots['Amulet'],
-                self.hero_slots['Left_arm'],
-                self.hero_slots['Right_arm'],
-                self.hero_name
-            ))
+            sql = (
+                    "UPDATE hero_slots SET " +
+                    ", ".join(f"{slot.lower()} = %s" for slot in self.hero_slots) +
+                    " WHERE hero_name = %s"
+            )
+
+            cursor.execute(sql, (*self.hero_slots.values(), self.hero_name))
 
     def _create_slots_db(self):
         with CursorFromConnectionPool() as cursor:
@@ -248,17 +231,7 @@ class HeroSlots:
                   '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(sql, (
                 self.hero_name,
-                self.hero_slots['helmet'],
-                self.hero_slots['chest'],
-                self.hero_slots['belt'],
-                self.hero_slots['pants'],
-                self.hero_slots['boots'],
-                self.hero_slots['arms'],
-                self.hero_slots['left_ring'],
-                self.hero_slots['right_ring'],
-                self.hero_slots['amulet'],
-                self.hero_slots['left_arm'],
-                self.hero_slots['right_arm']
+                *self.hero_slots.values()
             ))
 
     @classmethod
