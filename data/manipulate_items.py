@@ -243,7 +243,7 @@ class HeroStats(Heroes, HeroSlots):
         return self.attack
 
     def __get_status_from_item(self, ATK, DEF):
-        bonus_hp_from_def = DEF*20
+        bonus_hp_from_def = DEF*5
         self.hp += int(bonus_hp_from_def)
         self.attack += ATK
         self.defense += DEF
