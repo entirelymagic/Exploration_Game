@@ -1,5 +1,6 @@
 from unittest import TestCase
 from app import *
+from data.lvl_sistem import get_xp_needed
 
 
 def startConn(test):
@@ -43,3 +44,7 @@ class Testing(TestCase):
         for i in (10, 100):
             new_item = CreateMonster(i)
             # print(new_item)
+
+    def test_get_xp(self):
+        result = 22901683
+        self.assertEqual(get_xp_needed(99), result)
