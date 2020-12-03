@@ -1,3 +1,4 @@
+from data.fighting import Fighting
 from database.postgreSQL_connection import Database
 from database.db_login_info import database_name, user_name, user_password, host_name
 from data.data_types import Users, Heroes, Items, HeroSlots
@@ -20,6 +21,13 @@ my_hero = HeroStats('Godlike', 'elvis.munteanu@gmail.com')
 
 print(my_hero.hero_slots)
 print(my_hero)
+my_hero.update_slots_db()
 
+monster1 = CreateMonster(1)
+print(monster1)
+fight = Fighting(my_hero, monster1)
+winner = fight.winner
+print(winner)
+print(my_hero)
 Database.close_all_connections()
 
