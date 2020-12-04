@@ -181,13 +181,15 @@ class HeroStats(Heroes, HeroSlots):
         self.hero_slots = self._get_slots()
         self.items = self.__get_hero_items()
         self._get_status_for_equipped_items()
+        self.currentHP = self.hp
 
     autoEquip = True
 
     def __repr__(self):
         return f"""Character <{self.hero_name}>
                 lvl: {self.lvl}
-                hp: {self.hp} 
+                hp: {self.currentHP}
+                max_HP: {self.hp}
                 attack: {self.attack}
                 defense: {self.defense}
                 fire attack: {self.fire_attack}

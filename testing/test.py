@@ -20,7 +20,6 @@ class Testing(TestCase):
     @startConn
     def test_HeroSlots(self):
         slots_for_my_hero = HeroSlots('Godlike')
-        # print(slots_for_my_hero)
         slots_after_db = slots_for_my_hero.get_hero_slots_from_db()
         slots_for_my_hero.update_slots_db()
         self.assertNotEqual(slots_for_my_hero, slots_after_db)
@@ -44,3 +43,4 @@ class Testing(TestCase):
     def test_get_xp(self):
         result = 22901683
         self.assertEqual(get_xp_needed(99), result)
+
