@@ -12,11 +12,7 @@ Database.initialise(database=database_name,
                     host=host_name,
                     port=5432)
 
-USER_CHOICE = """
-1. Start Adventure
-2. View Inventory
-3. View HeroStats
-"""
+
 my_hero = HeroStats('Godlike', 'elvis.munteanu@gmail.com')
 
 print(my_hero.hero_slots)
