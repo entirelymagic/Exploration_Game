@@ -1,4 +1,4 @@
-from data.data_types import Items, Heroes, HeroSlots
+from src.data_types import Items, Heroes, HeroSlots
 from random import randint, choice
 
 

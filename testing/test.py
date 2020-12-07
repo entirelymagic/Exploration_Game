@@ -1,6 +1,6 @@
 from unittest import TestCase
 from app import *
-from data.lvl_sistem import get_xp_needed
+from src.lvl_sistem import get_xp_needed
 
 
 def startConn(test):
