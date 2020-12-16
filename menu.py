@@ -15,3 +15,21 @@ INVENTORY_CHOICE = """
 1. Select item number to equip.
 2. Go back to main menu.
 """
+
+MENU_BAR = {  # TODO menu bar actions
+    "adventure": "adventure_choice",
+    "inventory": "present_inventory",
+    "hero_stats": "preset_hero_stats",
+    "quit": "quit"
+}
+
+ADVENTURE_BAR = {
+    "attack": "attack",
+    "heal": "heal",
+    "go_back": "go_back"
+}
+
+INVENTORY_BAR = {
+
+}
+
