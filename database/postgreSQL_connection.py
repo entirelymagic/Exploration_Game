@@ -31,7 +31,8 @@ class Database:
 
 
 class CursorFromConnectionPool:
-    """A class that create a cursor from the connection pool, execute it if there is no error and close it after."""
+    """A class that create a cursor from  thread-safe (and not) connection pools., execute it if there is no error
+    and close it after. """
     def __init__(self):
         self.conn = None
         self.cursor = None
