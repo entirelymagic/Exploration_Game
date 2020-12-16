@@ -23,6 +23,7 @@ class Users:
 
     @classmethod
     def load_from_db_by_email(cls, email):
+        """Load from the database stats about the user by email using CursorFromConnectionPool"""
         with CursorFromConnectionPool() as cursor:
             # Note the (email,) to make it a tuple!
             sql = 'SELECT * FROM users WHERE email= %s'
@@ -35,6 +36,7 @@ class Users:
 
     @classmethod
     def _use_SQL(cls, sql, *args):
+        """Execute a database statement, just for testing, will be removed after."""
         with CursorFromConnectionPool() as cursor:
             cursor.execute(sql, (*args,))
 
@@ -88,6 +90,7 @@ class Heroes:
 
     @classmethod
     def _use_SQL(cls, sql, *args):
+        """Execute a database statement, just for testing, will be removed after."""
         with CursorFromConnectionPool() as cursor:
             cursor.execute(sql, (*args,))
 
@@ -163,6 +166,7 @@ class Items:
 
     @classmethod
     def _use_SQL(cls, sql, *args):
+        """Execute a database statement, just for testing, will be removed after."""
         with CursorFromConnectionPool() as cursor:
             cursor.execute(sql, (*args,))
 
@@ -236,6 +240,7 @@ class HeroSlots:
 
     @classmethod
     def _use_SQL(cls, sql, *args):
+        """Execute a database statement, just for testing, will be removed after."""
         with CursorFromConnectionPool() as cursor:
             cursor.execute(sql, (*args,))
 

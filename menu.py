@@ -30,6 +30,7 @@ ADVENTURE_BAR = {
 }
 
 INVENTORY_BAR = {
-
+    "select_item": "select_item",
+    "go_back": "go_back"
 }
 

@@ -2,10 +2,19 @@ from psycopg2 import pool
 
 
 class Database:
+    """Create a database connection with arguments given to the initialise method:
+    Database.initialise(database=database_name,
+                        user=user_name,
+                        password=user_password,
+                        host=host_name,
+                        port=5432)
+    """
     __connection_pool = None
 
     @staticmethod
     def initialise(**kwargs):
+        """database, user, password, host, port arguments should be given.
+        10 connections wil be available"""
         Database.__connection_pool = pool.SimpleConnectionPool(1, 10, **kwargs)
 
     @staticmethod
@@ -22,6 +31,7 @@ class Database:
 
 
 class CursorFromConnectionPool:
+    """A class that create a cursor from the connection pool, execute it if there is no error and close it after."""
     def __init__(self):
         self.conn = None
         self.cursor = None
