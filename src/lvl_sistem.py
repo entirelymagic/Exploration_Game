@@ -1,4 +1,4 @@
-def get_xp_needed(lvl_provided):
+def xp_needed_for_the_next_lvl(lvl_provided):
     """
     Giving the lvl provided this function calculates the total xp needed
     to level up to the next one."""
@@ -6,7 +6,7 @@ def get_xp_needed(lvl_provided):
     lvl: int = 1
     xp = 100
     needed_xp = 100
-    for i in range(0, 100):
+    for i in range(1, 101):
         increased = lvl**(1+0.5)**2
         xp = xp+increased
         needed_xp += xp

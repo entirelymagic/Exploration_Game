@@ -9,6 +9,10 @@ class Fighting:
         # TODO finish class
 
     def __get_winner(self):
+        """Take hero and monster attack and hp and calculate and return the winner  and set the
+        remaining HP left for the hero .
+        Each round the attack of the hero and monster are draw from the HP of opposite.
+        """
         hero_hp_left = self.hero.currentHP - self.monster.attack
         monster_hp_left = self.monster.hp - self.hero.attack
 
