@@ -172,7 +172,7 @@ class Items:
 
 
 class Monsters:
-    """Not Implemented Yet!"""
+    """A class monster.!"""
     def __init__(self, name, lvl, hp, attack, defense):
         self.name = name
         self.lvl = lvl
