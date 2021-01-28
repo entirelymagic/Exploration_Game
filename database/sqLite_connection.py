@@ -1,6 +1,7 @@
 import sqlite3
 
 
+# it is not going to be used
 class DatabaseConnectionsSQLite:
     """Create a Database Connection Object that take a host as a database and return the connection"""
 

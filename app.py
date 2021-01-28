@@ -1,7 +1,7 @@
 from src.fighting import Fighting
 from database.postgreSQL_connection import Database
 from database.db_login_info import database_name, user_name, user_password, host_name
-from src.data_types import Users, Heroes, Items, HeroSlots
+from src.user import User, Hero, Item, HeroSlots
 from src.manipulate_items import CreateItems, HeroStats, CreateMonster
 from random import randint
 
